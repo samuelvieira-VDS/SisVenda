@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Sisvenda.Views.ProdutoDetailPage"
+             Title="{Binding TituloPagina}">
+
+    <Grid RowDefinitions="*,auto" Padding="20" BackgroundColor="White">
+        <!-- Formulário -->
+        <ScrollView Grid.Row="0">
+            <StackLayout Spacing="15">
+                <!-- Título -->
+                <Label Text="Dados do Produto" 
+                       FontSize="18" 
+                       FontAttributes="Bold"
+                       TextColor="#333"/>
+
+                <!-- Código -->
+                <StackLayout Spacing="5">
+                    <Label Text="Código:" FontAttributes="Bold" TextColor="#333"/>
+                    <Entry x:Name="CodigoEntry"
+                           Placeholder="Digite o código"
+                           Text="{Binding Produto.Codigo}"
+                           PlaceholderColor="Gray"/>
+                </StackLayout>
+
+                <!-- Nome -->
+                <StackLayout Spacing="5">
+                    <Label Text="Nome:" FontAttributes="Bold" TextColor="#333"/>
+                    <Entry x:Name="NomeEntry"
+                           Placeholder="Digite o nome"
+                           Text="{Binding Produto.Nome}"
+                           PlaceholderColor="Gray"/>
+                </StackLayout>
+
+                <!-- Descrição -->
+                <StackLayout Spacing="5">
+                    <Label Text="Descrição:" FontAttributes="Bold" TextColor="#333"/>
+                    <Editor x:Name="DescricaoEditor"
+                            Placeholder="Digite a descrição"
+                            Text="{Binding Produto.Descricao}"
+                            HeightRequest="100"
+                            PlaceholderColor="Gray"/>
+                </StackLayout>
+
+                <!-- Preço de Venda -->
+                <StackLayout Spacing="5">
+                    <Label Text="Preço de Venda (R$):" FontAttributes="Bold" TextColor="#333"/>
+                    <Entry x:Name="PrecoEntry"
+                           Placeholder="0,00"
+                           Text="{Binding Produto.Preco}"
+                           Keyboard="Numeric"
+                           PlaceholderColor="Gray"/>
+                </StackLayout>
+
+                <!-- Preço de Custo -->
+                <StackLayout Spacing="5">
+                    <Label Text="Preço de Custo (R$):" FontAttributes="Bold" TextColor="#333"/>
+                    <Entry x:Name="PrecoCustoEntry"
+                           Placeholder="0,00"
+                           Text="{Binding Produto.PrecoCusto}"
+                           Keyboard="Numeric"
+                           PlaceholderColor="Gray"/>
+                </StackLayout>
+
+                <!-- Margem de Lucro (somente leitura) -->
+                <StackLayout Spacing="5">
+                    <Label Text="Margem de Lucro:" FontAttributes="Bold" TextColor="#333"/>
+                    <Label Text="{Binding MargemLucro, StringFormat='{0:F2}%'}"
+                           FontSize="14"
+                           TextColor="#007AFF"
+                           FontAttributes="Bold"/>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+
+        <!-- Botões de Ação -->
+        <Grid Grid.Row="1" 
+              ColumnDefinitions="*,*" 
+              ColumnSpacing="10">
+            <Button Grid.Column="0"
+                   Text="Cancelar"
+                   Clicked="OnCancelarClicked"
+                   BackgroundColor="#FF3B30"
+                   TextColor="White"
+                   CornerRadius="5"/>
+            <Button Grid.Column="1"
+                   Text="Salvar"
+                   Clicked="OnSalvarClicked"
+                   BackgroundColor="#34C759"
+                   TextColor="White"
+                   CornerRadius="5"/>
+        </Grid>
+    </Grid>
+</ContentPage>

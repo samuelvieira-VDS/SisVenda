@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace SisVenda
+namespace Sisvenda
 {
     public partial class App : Application
     {

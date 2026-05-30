@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace SisVenda
+namespace Sisvenda
 {
     public class Program
     {

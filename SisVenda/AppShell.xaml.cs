@@ -1,4 +1,4 @@
-﻿namespace SisVenda
+﻿namespace Sisvenda
 {
     public partial class AppShell : Shell
     {

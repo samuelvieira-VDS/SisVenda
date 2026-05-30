@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace SisVenda
+namespace Sisvenda
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate
