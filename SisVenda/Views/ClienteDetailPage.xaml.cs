@@ -109,7 +109,7 @@ namespace Sisvenda.Views
                     await _viewModel.UpdateClienteAsync(_cliente);
                 }
 
-                await Shell.Current.GoToAsync("/clientes", true);
+                await Shell.Current.GoToAsync("///clientes", true);
             }
             catch (Exception ex)
             {
