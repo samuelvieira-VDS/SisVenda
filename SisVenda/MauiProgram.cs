@@ -22,7 +22,10 @@ namespace Sisvenda
                 .AddSingleton<ProdutoViewModel>()
                 .AddSingleton<ProdutoListPage>()
                 .AddTransient<ProdutoDetailViewModel>()
-                .AddTransient<ProdutoDetailPage>();
+                .AddTransient<ProdutoDetailPage>()
+                .AddSingleton<ClienteViewModel>()
+                .AddSingleton<ClienteListPage>()
+                .AddTransient<ClienteDetailPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

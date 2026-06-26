@@ -3,5 +3,8 @@
     <TabBar>
         <ShellContent Title="Início" ContentTemplate="{DataTemplate local:MainPage}" Route="MainPage"/>
         <ShellContent Title="Produtos" ContentTemplate="{DataTemplate views:ProdutoListPage}" Route="produtos"/>
+        <ShellContent Title="Clientes" ContentTemplate="{DataTemplate views:ClienteListPage}" Route="clientes"/>
     </TabBar>
+    <ShellContent Route="produtoDetail" ContentTemplate="{DataTemplate views:ProdutoDetailPage}"/>
+    <ShellContent Route="clienteDetail" ContentTemplate="{DataTemplate views:ClienteDetailPage}"/>
 </Shell>

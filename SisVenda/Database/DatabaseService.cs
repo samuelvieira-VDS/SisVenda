@@ -24,6 +24,7 @@ namespace Sisvenda.Database
 
             _db = new SQLiteAsyncConnection(_dbPath);
             await _db.CreateTableAsync<Produto>();
+            await _db.CreateTableAsync<Cliente>();
         }
 
         /// <summary>
@@ -111,6 +112,95 @@ namespace Sisvenda.Database
         {
             await InitializeAsync();
             await _db.DeleteAllAsync<Produto>();
+        }
+
+        // ======== MÉTODOS PARA CLIENTE ========
+
+        /// <summary>
+        /// Adiciona um novo cliente ao banco de dados
+        /// </summary>
+        public async Task<int> AddClienteAsync(Cliente cliente)
+        {
+            await InitializeAsync();
+            return await _db.InsertAsync(cliente);
+        }
+
+        /// <summary>
+        /// Obtém todos os clientes
+        /// </summary>
+        public async Task<List<Cliente>> GetClientesAsync()
+        {
+            await InitializeAsync();
+            return await _db.Table<Cliente>().ToListAsync();
+        }
+
+        /// <summary>
+        /// Obtém um cliente pelo ID
+        /// </summary>
+        public async Task<Cliente> GetClienteAsync(int id)
+        {
+            await InitializeAsync();
+            return await _db.Table<Cliente>()
+                .Where(c => c.Id == id)
+                .FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Atualiza um cliente existente
+        /// </summary>
+        public async Task<int> UpdateClienteAsync(Cliente cliente)
+        {
+            await InitializeAsync();
+            return await _db.UpdateAsync(cliente);
+        }
+
+        /// <summary>
+        /// Deleta um cliente pelo ID
+        /// </summary>
+        public async Task<int> DeleteClienteAsync(int id)
+        {
+            await InitializeAsync();
+            return await _db.DeleteAsync<Cliente>(id);
+        }
+
+        /// <summary>
+        /// Deleta um cliente
+        /// </summary>
+        public async Task<int> DeleteClienteAsync(Cliente cliente)
+        {
+            await InitializeAsync();
+            return await _db.DeleteAsync(cliente);
+        }
+
+        /// <summary>
+        /// Busca clientes por CPF/CNPJ
+        /// </summary>
+        public async Task<List<Cliente>> SearchClientesByCpfCnpj(string cpfCnpj)
+        {
+            await InitializeAsync();
+            return await _db.Table<Cliente>()
+                .Where(c => c.CpfCnpj.Contains(cpfCnpj))
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Busca clientes por nome
+        /// </summary>
+        public async Task<List<Cliente>> SearchClientesByNome(string nome)
+        {
+            await InitializeAsync();
+            return await _db.Table<Cliente>()
+                .Where(c => c.Nome.Contains(nome))
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Limpa a tabela de clientes (útil para testes)
+        /// </summary>
+        public async Task ClearClientesAsync()
+        {
+            await InitializeAsync();
+            await _db.DeleteAllAsync<Cliente>();
         }
     }
 }
