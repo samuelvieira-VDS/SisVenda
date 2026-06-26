@@ -25,6 +25,8 @@ namespace Sisvenda.Database
             _db = new SQLiteAsyncConnection(_dbPath);
             await _db.CreateTableAsync<Produto>();
             await _db.CreateTableAsync<Cliente>();
+            await _db.CreateTableAsync<Venda>();
+            await _db.CreateTableAsync<ItemVenda>();
         }
 
         /// <summary>
@@ -201,6 +203,172 @@ namespace Sisvenda.Database
         {
             await InitializeAsync();
             await _db.DeleteAllAsync<Cliente>();
+        }
+
+        // ======== MÉTODOS PARA VENDA ========
+
+        /// <summary>
+        /// Adiciona uma nova venda ao banco de dados
+        /// </summary>
+        public async Task<int> AddVendaAsync(Venda venda)
+        {
+            await InitializeAsync();
+            var vendaId = await _db.InsertAsync(venda);
+            return vendaId;
+        }
+
+        /// <summary>
+        /// Obtém todas as vendas
+        /// </summary>
+        public async Task<List<Venda>> GetVendasAsync()
+        {
+            await InitializeAsync();
+            return await _db.Table<Venda>().ToListAsync();
+        }
+
+        /// <summary>
+        /// Obtém uma venda pelo ID
+        /// </summary>
+        public async Task<Venda> GetVendaAsync(int id)
+        {
+            await InitializeAsync();
+            return await _db.Table<Venda>()
+                .Where(v => v.Id == id)
+                .FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Atualiza uma venda existente
+        /// </summary>
+        public async Task<int> UpdateVendaAsync(Venda venda)
+        {
+            await InitializeAsync();
+            return await _db.UpdateAsync(venda);
+        }
+
+        /// <summary>
+        /// Deleta uma venda pelo ID (e seus itens)
+        /// </summary>
+        public async Task<int> DeleteVendaAsync(int id)
+        {
+            await InitializeAsync();
+            // Primeiro deleta todos os itens da venda
+            await _db.ExecuteAsync("DELETE FROM ItemVendas WHERE IdVenda = ?", id);
+            // Depois deleta a venda
+            return await _db.DeleteAsync<Venda>(id);
+        }
+
+        /// <summary>
+        /// Deleta uma venda (e seus itens)
+        /// </summary>
+        public async Task<int> DeleteVendaAsync(Venda venda)
+        {
+            await InitializeAsync();
+            // Primeiro deleta todos os itens da venda
+            await _db.ExecuteAsync("DELETE FROM ItemVendas WHERE IdVenda = ?", venda.Id);
+            // Depois deleta a venda
+            return await _db.DeleteAsync(venda);
+        }
+
+        /// <summary>
+        /// Busca vendas por cliente
+        /// </summary>
+        public async Task<List<Venda>> SearchVendasByCliente(int idCliente)
+        {
+            await InitializeAsync();
+            return await _db.Table<Venda>()
+                .Where(v => v.IdCliente == idCliente)
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Busca vendas por data
+        /// </summary>
+        public async Task<List<Venda>> SearchVendasByData(DateTime data)
+        {
+            await InitializeAsync();
+            return await _db.Table<Venda>()
+                .Where(v => v.Data.Date == data.Date)
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Limpa a tabela de vendas (útil para testes)
+        /// </summary>
+        public async Task ClearVendasAsync()
+        {
+            await InitializeAsync();
+            await _db.DeleteAllAsync<Venda>();
+            await _db.DeleteAllAsync<ItemVenda>();
+        }
+
+        // ======== MÉTODOS PARA ITEMVENDA ========
+
+        /// <summary>
+        /// Adiciona um novo item de venda ao banco de dados
+        /// </summary>
+        public async Task<int> AddItemVendaAsync(ItemVenda itemVenda)
+        {
+            await InitializeAsync();
+            return await _db.InsertAsync(itemVenda);
+        }
+
+        /// <summary>
+        /// Obtém todos os itens de uma venda
+        /// </summary>
+        public async Task<List<ItemVenda>> GetItensPorVendaAsync(int idVenda)
+        {
+            await InitializeAsync();
+            return await _db.Table<ItemVenda>()
+                .Where(i => i.IdVenda == idVenda)
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Obtém um item de venda pelo ID
+        /// </summary>
+        public async Task<ItemVenda> GetItemVendaAsync(int id)
+        {
+            await InitializeAsync();
+            return await _db.Table<ItemVenda>()
+                .Where(i => i.Id == id)
+                .FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Atualiza um item de venda existente
+        /// </summary>
+        public async Task<int> UpdateItemVendaAsync(ItemVenda itemVenda)
+        {
+            await InitializeAsync();
+            return await _db.UpdateAsync(itemVenda);
+        }
+
+        /// <summary>
+        /// Deleta um item de venda pelo ID
+        /// </summary>
+        public async Task<int> DeleteItemVendaAsync(int id)
+        {
+            await InitializeAsync();
+            return await _db.DeleteAsync<ItemVenda>(id);
+        }
+
+        /// <summary>
+        /// Deleta um item de venda
+        /// </summary>
+        public async Task<int> DeleteItemVendaAsync(ItemVenda itemVenda)
+        {
+            await InitializeAsync();
+            return await _db.DeleteAsync(itemVenda);
+        }
+
+        /// <summary>
+        /// Limpa a tabela de itens de venda (útil para testes)
+        /// </summary>
+        public async Task ClearItensVendaAsync()
+        {
+            await InitializeAsync();
+            await _db.DeleteAllAsync<ItemVenda>();
         }
     }
 }

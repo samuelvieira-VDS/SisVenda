@@ -4,7 +4,9 @@
         <ShellContent Title="Início" ContentTemplate="{DataTemplate local:MainPage}" Route="MainPage"/>
         <ShellContent Title="Produtos" ContentTemplate="{DataTemplate views:ProdutoListPage}" Route="produtos"/>
         <ShellContent Title="Clientes" ContentTemplate="{DataTemplate views:ClienteListPage}" Route="clientes"/>
+        <ShellContent Title="Vendas" ContentTemplate="{DataTemplate views:VendaListPage}" Route="vendas"/>
     </TabBar>
     <ShellContent Route="produtoDetail" ContentTemplate="{DataTemplate views:ProdutoDetailPage}"/>
     <ShellContent Route="clienteDetail" ContentTemplate="{DataTemplate views:ClienteDetailPage}"/>
+    <ShellContent Route="vendaDetail" ContentTemplate="{DataTemplate views:VendaDetailPage}"/>
 </Shell>

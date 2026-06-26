@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Sisvenda.Views.VendaListPage"
+             Title="Vendas">
+
+    <Grid RowDefinitions="auto,*,auto" Padding="0">
+        <Grid ColumnDefinitions="*,auto" Padding="10" BackgroundColor="#F0F0F0">
+            <SearchBar x:Name="SearchBar" 
+                      Placeholder="Buscar vendas por cliente..." 
+                      PlaceholderColor="Gray"
+                      TextChanged="OnSearchTextChanged"/>
+            <Button Grid.Column="1" 
+                   Text="+" 
+                   FontSize="24"
+                   Clicked="OnAddVendaClicked"
+                   CornerRadius="5"
+                   WidthRequest="50"
+                   HeightRequest="50"
+                   BackgroundColor="#007AFF"
+                   TextColor="White"
+                   Padding="0"/>
+        </Grid>
+
+        <CollectionView Grid.Row="1" 
+                       x:Name="VendaCollectionView"
+                       ItemsSource="{Binding Vendas}"
+                       SelectionMode="Single">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="10" Margin="10" Spacing="0">
+                        <Frame Padding="10" CornerRadius="10" BorderColor="#E0E0E0" HasShadow="False" BackgroundColor="White">
+                            <Grid ColumnDefinitions="*,auto" RowDefinitions="auto,auto" Padding="10">
+                                <Label Grid.Column="0" Grid.Row="0" Text="{Binding Data, StringFormat='Data: {0:dd/MM/yyyy}'}" FontSize="16" FontAttributes="Bold"/>
+                                <Label Grid.Column="0" Grid.Row="1" Text="{Binding ValorTotal, StringFormat='Total: {0:C}'}" FontSize="14" TextColor="Gray"/>
+
+                                <StackLayout Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Orientation="Vertical" Spacing="5" VerticalOptions="Center">
+                                    <Button x:Name="EditButton"
+                                           Text="✎"
+                                           FontSize="18"
+                                           Clicked="OnEditVendaClicked"
+                                           CornerRadius="20"
+                                           WidthRequest="40"
+                                           HeightRequest="40"
+                                           BackgroundColor="#34C759"
+                                           TextColor="White"
+                                           CommandParameter="{Binding .}"/>
+                                    <Button x:Name="DeleteButton"
+                                           Text="✕"
+                                           FontSize="18"
+                                           Clicked="OnDeleteVendaClicked"
+                                           CornerRadius="20"
+                                           WidthRequest="40"
+                                           HeightRequest="40"
+                                           BackgroundColor="#FF3B30"
+                                           TextColor="White"
+                                           CommandParameter="{Binding .}"/>
+                                </StackLayout>
+                            </Grid>
+                        </Frame>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <ActivityIndicator Grid.Row="1"
+                          IsRunning="{Binding IsLoading}"
+                          IsVisible="{Binding IsLoading}"
+                          Color="#007AFF"/>
+
+        <StackLayout Grid.Row="1"
+                    IsVisible="{Binding Vendas.Count, Converter={StaticResource IsListEmptyConverter}}"
+                    Padding="20"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center">
+            <Label Text="Nenhuma venda encontrada"
+                  FontSize="16"
+                  HorizontalOptions="Center"
+                  TextColor="Gray"/>
+            <Label Text="Toque em + para adicionar uma nova venda"
+                  FontSize="12"
+                  HorizontalOptions="Center"
+                  TextColor="LightGray"/>
+        </StackLayout>
+    </Grid>
+</ContentPage>

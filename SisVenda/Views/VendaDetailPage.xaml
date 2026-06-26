@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Sisvenda.Views.VendaDetailPage"
+             Title="Detalhes da Venda">
+
+    <Grid RowDefinitions="auto,auto,*,auto" Padding="10">
+
+        <!-- Data da Venda -->
+        <VerticalStackLayout Grid.Row="0" Padding="10" Spacing="5">
+            <Label Text="Data da Venda:" FontSize="14" FontAttributes="Bold"/>
+            <DatePicker x:Name="DataPicker" 
+                       Date="{Binding CurrentDate, Mode=TwoWay}"
+                       Format="dd/MM/yyyy"/>
+        </VerticalStackLayout>
+
+        <!-- Seleção de Cliente -->
+        <VerticalStackLayout Grid.Row="1" Padding="10" Spacing="5">
+            <Label Text="Cliente:" FontSize="14" FontAttributes="Bold"/>
+            <Picker x:Name="ClientePicker" 
+                   Title="Selecione um cliente"
+                   SelectedItem="{Binding ClienteSelecionado, Mode=TwoWay}"
+                   SelectedIndexChanged="OnClienteSelectedChanged"/>
+        </VerticalStackLayout>
+
+        <!-- Produtos e Itens de Venda -->
+        <VerticalStackLayout Grid.Row="2" Padding="10" Spacing="10">
+            <Label Text="Itens da Venda:" FontSize="14" FontAttributes="Bold"/>
+
+            <!-- Adicionar novo item -->
+            <StackLayout Orientation="Horizontal" Spacing="5">
+                <Picker x:Name="ProdutoPicker"
+                       Title="Selecione um produto"
+                       HorizontalOptions="FillAndExpand"
+                       SelectedIndexChanged="OnProdutoSelectedChanged"/>
+                <Entry x:Name="QuantidadeEntry"
+                      Placeholder="Qtd"
+                      Keyboard="Numeric"
+                      WidthRequest="60"/>
+                <Button Text="Adicionar"
+                       Clicked="OnAdicionarItemClicked"
+                       WidthRequest="100"
+                       BackgroundColor="#007AFF"
+                       TextColor="White"
+                       Padding="5"/>
+            </StackLayout>
+
+            <!-- Lista de itens adicionados -->
+            <CollectionView ItemsSource="{Binding Itens}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="5" Margin="5" Spacing="0">
+                            <Frame Padding="8" CornerRadius="8" BorderColor="#E0E0E0" HasShadow="False" BackgroundColor="#F9F9F9">
+                                <Grid ColumnDefinitions="*,auto" RowDefinitions="auto,auto,auto" Padding="5">
+                                    <Label Grid.Column="0" Grid.Row="0" 
+                                          Text="{Binding Produto.Nome, StringFormat='Produto: {0}'}" 
+                                          FontSize="12" FontAttributes="Bold"/>
+                                    <Label Grid.Column="0" Grid.Row="1" 
+                                          Text="{Binding Quantidade, StringFormat='Quantidade: {0}'}" 
+                                          FontSize="11" TextColor="Gray"/>
+                                    <Label Grid.Column="0" Grid.Row="2" 
+                                          Text="{Binding ValorTotal, StringFormat='Subtotal: {0:C}'}" 
+                                          FontSize="11" FontAttributes="Bold" TextColor="#34C759"/>
+
+                                    <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="3"
+                                           Text="✕"
+                                           FontSize="16"
+                                           Clicked="OnRemoverItemClicked"
+                                           CornerRadius="20"
+                                           WidthRequest="35"
+                                           HeightRequest="35"
+                                           BackgroundColor="#FF3B30"
+                                           TextColor="White"
+                                           CommandParameter="{Binding .}"/>
+                                </Grid>
+                            </Frame>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+
+        <!-- Total e Botões de Ação -->
+        <Grid Grid.Row="3" ColumnDefinitions="*,*" RowDefinitions="auto,auto" Padding="10" ColumnSpacing="10" BackgroundColor="#F0F0F0">
+            <Label Grid.Column="0" Grid.Row="0" 
+                  Text="Valor Total:" 
+                  FontSize="14" 
+                  FontAttributes="Bold"
+                  VerticalOptions="Center"/>
+            <Label Grid.Column="1" Grid.Row="0" 
+                  Text="{Binding ValorTotal, StringFormat='R$ {0:F2}'}" 
+                  FontSize="18" 
+                  FontAttributes="Bold"
+                  TextColor="#34C759"
+                  HorizontalTextAlignment="End"
+                  VerticalOptions="Center"/>
+
+            <Button Grid.Column="0" Grid.Row="1"
+                   Text="Cancelar"
+                   Clicked="OnCancelClicked"
+                   BackgroundColor="#FF3B30"
+                   TextColor="White"
+                   CornerRadius="8"
+                   Padding="10"/>
+
+            <Button Grid.Column="1" Grid.Row="1"
+                   Text="Salvar"
+                   Clicked="OnSaveVendaClicked"
+                   BackgroundColor="#34C759"
+                   TextColor="White"
+                   CornerRadius="8"
+                   Padding="10"/>
+        </Grid>
+    </Grid>
+</ContentPage>
